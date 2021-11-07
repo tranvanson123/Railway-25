@@ -146,46 +146,54 @@ WHERE a.AnswerID IS NULL;
 
 
 ##Exercise 2: Union Question 17:
-a) Lấy các account thuộc nhóm thứ 1
-SELECT A.FullName FROM `Account` A
-JOIN GroupAccount GA ON A.AccountID = GA.AccountID
+##1Lấy các account thuộc nhóm thứ 1
+
+SELECT A.FullName ,A.AccountID FROM `Account` A
+JOIN GroupAccount GA ON A.AccountID = GA.GroupID
 WHERE GA.GroupID = 1;
-b) Lấy các account thuộc nhóm thứ 2
-SELECT A.FullName FROM `Account` A
-JOIN GroupAccount GA ON A.AccountID = GA.AccountID
+
+## Lấy các account thuộc nhóm thứ 2
+SELECT A.FullName ,A.AccountID FROM `Account` A
+JOIN GroupAccount GA ON A.AccountID = GA.GroupID
 WHERE GA.GroupID = 2;
-c) Ghép 2 kết quả từ câu a) và câu b) sao cho không có record nào trùng nhau
-SELECT A.FullName
+
+## Ghép 2 kết quả từ câu a) và câu b) sao cho không có record nào trùng nhau
+SELECT A.FullName,A.AccountID
 FROM `Account` A
-JOIN GroupAccount GA ON A.AccountID = GA.AccountID
+JOIN GroupAccount GA ON A.AccountID = GA.GroupID
 WHERE GA.GroupID = 1
 UNION
-SELECT A.FullName
-FROM `Account` A
-JOIN GroupAccount GA ON A.AccountID = GA.AccountID
+SELECT A.FullName ,A.AccountID FROM `Account` A
+JOIN GroupAccount GA ON A.AccountID = GA.GroupID
 WHERE GA.GroupID = 2;
-Question 18:
-a) Lấy các group có lớn hơn 5 thành viên
-SELECT g.GroupName, COUNT(ga.GroupID) AS SL
-FROM GroupAccount ga
-JOIN `Group` g ON ga.GroupID = g.GroupID
-GROUP BY g.GroupID
-HAVING COUNT(ga.GroupID) >= 5;
-b) Lấy các group có nhỏ hơn 7 thành viên
-SELECT g.GroupName, COUNT(ga.GroupID) AS SL
-FROM GroupAccount ga
-JOIN `Group` g ON ga.GroupID = g.GroupID
-GROUP BY g.GroupID
-HAVING COUNT(ga.GroupID) <= 7;
-c) Ghép 2 kết quả từ câu a) và câu b)
-SELECT g.GroupName, COUNT(ga.GroupID) AS SL
-FROM GroupAccount ga
-JOIN `Group` g ON ga.GroupID = g.GroupID
-GROUP BY g.GroupID
-HAVING COUNT(ga.GroupID) >= 5
+
+
+##Question 18:
+##Lấy các group có lớn hơn 5 thành viên
+
+SELECT G.GroupName,G.GroupID, COUNT(GA.GroupID) AS SL
+FROM GroupAccount GA
+JOIN `Group` G ON GA.GroupID = G.GroupID
+GROUP BY GA.GroupID
+HAVING COUNT(GA.GroupID) > 5;
+##khong ra KQ 
+
+## Lấy các group có nhỏ hơn 7 thành viên
+SELECT G.GroupName,G.GroupID, COUNT(GA.GroupID) AS SL
+FROM GroupAccount GA
+JOIN `Group` G ON GA.GroupID = G.GroupID
+GROUP BY GA.GroupID
+HAVING COUNT(GA.GroupID) < 7;
+
+## Ghép 2 kết quả từ câu a) và câu b)
+SELECT G.GroupName,G.GroupID, COUNT(GA.GroupID) AS SL
+FROM GroupAccount GA
+JOIN `Group` G ON GA.GroupID = G.GroupID
+GROUP BY GA.GroupID
+HAVING COUNT(GA.GroupID) > 5
 UNION
-SELECT g.GroupName, COUNT(ga.GroupID) AS SL
-FROM GroupAccount ga
-JOIN `Group` g ON ga.GroupID = g.GroupID
-GROUP BY g.GroupID
-HAVING COUNT(ga.GroupID) <= 7;
+SELECT G.GroupName,G.GroupID, COUNT(GA.GroupID) AS SL
+FROM GroupAccount GA
+JOIN `Group` G ON GA.GroupID = G.GroupID
+GROUP BY GA.GroupID
+HAVING COUNT(GA.GroupID) < 7;
